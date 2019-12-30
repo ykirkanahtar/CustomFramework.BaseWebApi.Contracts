@@ -28,81 +28,110 @@ namespace CustomFramework.BaseWebApi.Contracts.ApiContracts
 
         public TResponse Get(string url, string language, string token)
         {
-            using (var client = new HttpClient())
+            try
             {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                client.DefaultRequestHeaders.Accept.Add(contentType);
-                client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
-
-                if (!string.IsNullOrEmpty(token))
+                using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                }
+                    var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Accept.Add(contentType);
+                    client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
 
-                var response = client.GetAsync(url).Result;
-                var jsonData = response.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject<TResponse>(jsonData);
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    }
+
+                    var response = client.GetAsync(url).Result;
+                    var jsonData = response.Content.ReadAsStringAsync().Result;
+
+                    return JsonConvert.DeserializeObject<TResponse>(jsonData);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
         public async Task<TResponse> GetAsync(string url, string language, string token = null)
         {
-            using (var client = new HttpClient())
+            try
             {
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                client.DefaultRequestHeaders.Accept.Add(contentType);
-                client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
-
-                if (!string.IsNullOrEmpty(token))
+                using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                }
+                    var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Accept.Add(contentType);
+                    client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
 
-                var response = await client.GetAsync(url);
-                var jsonData = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<TResponse>(jsonData);
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    }
+
+                    var response = await client.GetAsync(url);
+                    var jsonData = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<TResponse>(jsonData);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
         public TResponse GetApiToken(string url, object credentials, string language)
         {
-            using (var client = new HttpClient())
+            try
             {
-                //setup client
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
+                using (var client = new HttpClient())
+                {
+                    //setup client
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
 
-                var jsonContent = JsonConvert.SerializeObject(credentials);
-                var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                    var jsonContent = JsonConvert.SerializeObject(credentials);
+                    var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                //send request
-                var responseMessage = client.PostAsync(url, httpContent).Result;
+                    //send request
+                    var responseMessage = client.PostAsync(url, httpContent).Result;
 
-                //get access token from response body
-                var responseJson = responseMessage.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject<TResponse>(responseJson);
+                    //get access token from response body
+                    var responseJson = responseMessage.Content.ReadAsStringAsync().Result;
+                    return JsonConvert.DeserializeObject<TResponse>(responseJson);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
         public async Task<TResponse> GetApiTokenAsync(string url, object credentials, string language)
         {
-            using (var client = new HttpClient())
+            try
             {
-                //setup client
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
+                using (var client = new HttpClient())
+                {
+                    //setup client
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
 
-                var jsonContent = JsonConvert.SerializeObject(credentials);
-                var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                    var jsonContent = JsonConvert.SerializeObject(credentials);
+                    var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                //send request
-                var responseMessage = await client.PostAsync(url, httpContent);
+                    //send request
+                    var responseMessage = await client.PostAsync(url, httpContent);
 
-                //get access token from response body
-                var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<TResponse>(responseJson);
+                    //get access token from response body
+                    var responseJson = await responseMessage.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<TResponse>(responseJson);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
@@ -155,59 +184,72 @@ namespace CustomFramework.BaseWebApi.Contracts.ApiContracts
 
         public TResponse Post(string url, string jsonContent, string token, string language)
         {
-            using (var client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.Accept.Clear();
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                client.DefaultRequestHeaders.Accept.Add(contentType);
-                client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
-
-                if (!string.IsNullOrEmpty(token))
+                using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Accept.Add(contentType);
+                    client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
+
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    }
+
+                    var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                    var response = client.PostAsync(url, httpContent).Result;
+
+                    // if (response.StatusCode == HttpStatusCode.NotFound)
+                    // {
+                    //     throw new Exception(response.ReasonPhrase);
+                    // }
+
+                    var jsonData = response.Content.ReadAsStringAsync().Result;
+                    return JsonConvert.DeserializeObject<TResponse>(jsonData);
                 }
-
-                var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                var response = client.PostAsync(url, httpContent).Result;
-
-                // if (response.StatusCode == HttpStatusCode.NotFound)
-                // {
-                //     throw new Exception(response.ReasonPhrase);
-                // }
-
-                var jsonData = response.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject<TResponse>(jsonData);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
         public async Task<TResponse> PostAsync(string url, string jsonContent, string language, string token = null)
         {
-
-            using (var client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.Accept.Clear();
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                client.DefaultRequestHeaders.Accept.Add(contentType);
-                client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
-
-                if (!string.IsNullOrEmpty(token))
+                using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Accept.Add(contentType);
+                    client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
+
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    }
+
+                    var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                    var response = await client.PostAsync(url, httpContent);
+
+                    // if (response.StatusCode == HttpStatusCode.NotFound)
+                    // {
+                    //     throw new Exception(response.ReasonPhrase);
+                    // }
+
+                    var jsonData = await response.Content.ReadAsStringAsync();
+
+                    return JsonConvert.DeserializeObject<TResponse>(jsonData);
                 }
-
-                var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                var response = await client.PostAsync(url, httpContent);
-
-                // if (response.StatusCode == HttpStatusCode.NotFound)
-                // {
-                //     throw new Exception(response.ReasonPhrase);
-                // }
-
-                var jsonData = await response.Content.ReadAsStringAsync();
-
-                return JsonConvert.DeserializeObject<TResponse>(jsonData);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
@@ -231,45 +273,59 @@ namespace CustomFramework.BaseWebApi.Contracts.ApiContracts
 
         public TResponse Put(string url, string jsonContent, string token, string language)
         {
-            using (var client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.Accept.Clear();
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                client.DefaultRequestHeaders.Accept.Add(contentType);
-                client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
-
-                if (!string.IsNullOrEmpty(token))
+                using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Accept.Add(contentType);
+                    client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
+
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    }
+
+                    var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                    var response = client.PutAsync(url, httpContent).Result;
+                    var jsonData = response.Content.ReadAsStringAsync().Result;
+                    return JsonConvert.DeserializeObject<TResponse>(jsonData);
                 }
-
-                var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                var response = client.PutAsync(url, httpContent).Result;
-                var jsonData = response.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject<TResponse>(jsonData);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
         public async Task<TResponse> PutAsync(string url, string jsonContent, string language, string token = null)
         {
-            using (var client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.Accept.Clear();
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                client.DefaultRequestHeaders.Accept.Add(contentType);
-                client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
-
-                if (!string.IsNullOrEmpty(token))
+                using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                    client.DefaultRequestHeaders.Accept.Add(contentType);
+                    client.DefaultRequestHeaders.Add("Accept-Language", LanguageConverter(language));
+
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    }
+
+                    var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                    var response = await client.PutAsync(url, httpContent);
+                    var jsonData = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<TResponse>(jsonData);
                 }
-
-                var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                var response = await client.PutAsync(url, httpContent);
-                var jsonData = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<TResponse>(jsonData);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
