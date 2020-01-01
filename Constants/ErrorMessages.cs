@@ -13,6 +13,7 @@ namespace CustomFramework.BaseWebApi.Contracts.Constants
         public const string InvalidDate = "Invalid date";
         public const string MustBeANumber = "'{0}' must be a number";
         public const string DecimalPlacesError = "{0} field can not be have more than 2 places";
+
     }
 
 }
