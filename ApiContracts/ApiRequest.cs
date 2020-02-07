@@ -2,6 +2,11 @@ namespace CustomFramework.BaseWebApi.Contracts.ApiContracts
 {
     public class ApiRequest : IApiRequest
     {
+        public ApiRequest()
+        {
+
+        }
+        
         public ApiRequest(int applicationId, int userId, int clientApplicationId)
         {
             ApplicationId = applicationId;
